@@ -37,6 +37,10 @@ install(FILES systemd/joycond.service DESTINATION /etc/systemd/system
 install(FILES systemd/joycond.conf DESTINATION /etc/modules-load.d
         PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
         )
+install(FILES data/com.github.DanielOgorchock.joycond.metainfo.xml
+        DESTINATION /usr/share/metainfo
+        PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
+        )
 
 add_custom_target("uninstall" COMMENT "Uninstall installed files")
 add_custom_command(
