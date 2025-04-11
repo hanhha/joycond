@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 project(joycond)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
@@ -14,6 +14,7 @@ add_executable(joycond "")
 target_compile_options(joycond PRIVATE -Wall -Werror)
 include_directories(
     include/
+    moonlight/include/
     ${LIBEVDEV_INCLUDE_DIRS}
     ${LIBUDEV_INCLUDE_DIRS}
     )
