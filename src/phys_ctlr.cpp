@@ -65,6 +65,7 @@ std::optional<std::string> phys_ctlr::get_led_path(std::string const &name)
 
 void phys_ctlr::init_leds()
 {
+/* Disable to Debug
     std::optional<std::string> tmp;
     for (unsigned int i = 0; i < 100; i++) {
         tmp = get_led_path("player*1");
@@ -164,7 +165,7 @@ void phys_ctlr::init_leds()
             usleep(10);
         }
     }
-
+*/
 }
 
 void phys_ctlr::handle_event(struct input_event const &ev)
@@ -356,11 +357,13 @@ phys_ctlr::~phys_ctlr()
 
 bool phys_ctlr::set_player_led(int index, bool on)
 {
+/* Disable to Debug
     if (index > 3 || !player_leds[index].is_open() || is_serial)
         return false;
 
     player_leds[index] << (on ? '1' : '0');
     player_leds[index].flush();
+*/
     return true;
 }
 
@@ -389,17 +392,20 @@ bool phys_ctlr::set_player_leds_to_player(int player)
 
 bool phys_ctlr::set_home_led(unsigned short brightness)
 {
+/* Disable to Debug
     if (brightness > 15 || !home_led.is_open())
         return false;
 
     home_led << brightness;
     home_led.flush();
+*/
     return true;
 }
 
 bool phys_ctlr::blink_player_leds()
 {
-    /* start with all player leds off */
+/* Disable to Debug
+    // start with all player leds off
     set_all_player_leds(false);
 
     for (int i = 0; i < 4; i++) {
@@ -411,6 +417,7 @@ bool phys_ctlr::blink_player_leds()
             return false;
         }
     }
+*/
     return true;
 }
 
@@ -435,6 +442,7 @@ void phys_ctlr::handle_events()
             handle_event(ev);
         }
         ret = libevdev_next_event(evdev, LIBEVDEV_READ_FLAG_NORMAL, &ev);
+        std::cout << "libevdev_next_event = " << ret << "\n"; // Debug
     }
 }
 

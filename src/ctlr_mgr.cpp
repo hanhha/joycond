@@ -9,9 +9,13 @@
 //private
 void ctlr_mgr::epoll_event_callback(int event_fd)
 {
+    std::cout << "Callback event_fd: " << event_fd << "\n"; // Debug
+
     for (auto& kv : unpaired_controllers) {
         auto ctlr = kv.second;
-        if (event_fd == ctlr->get_fd()) {
+    	std::cout << "Check with ctlr->fd: " << ctlr->get_fd() << "\n"; // Debug
+        
+	if (event_fd == ctlr->get_fd()) {
             ctlr->handle_events();
             switch (ctlr->get_pairing_state()) {
                 case phys_ctlr::PairingState::Lone:
@@ -99,6 +103,8 @@ void ctlr_mgr::add_combined_ctlr()
 
     bool found_slot = false;
     for (unsigned int i = 0; i < paired_controllers.size(); i++) {
+        std::cout << "paired_controllers[" << i << "] = " << paired_controllers[i] << "\n"; // Debug
+
         if (!paired_controllers[i]) {
             found_slot = true;
             left->set_player_leds_to_player(i % 4 + 1);
@@ -175,6 +181,7 @@ void ctlr_mgr::add_ctlr(const std::string& devpath, const std::string& devname)
         return;
     }
 
+    std::cout << "Check for stale controller\n"; // Debug
     // See if this controller belongs to a "stale" controller
     for (unsigned int i = 0; i < stale_controllers.size(); i++) {
         auto& virt = stale_controllers[i];
@@ -199,6 +206,7 @@ void ctlr_mgr::add_ctlr(const std::string& devpath, const std::string& devname)
         }
     }
 
+    std::cout << "Check for belonging of combined controller\n"; // Debug
     // Check if a controller with this MAC already exists in a combined controller
     for (unsigned int i = 0; i < paired_controllers.size(); i++) {
         auto& virt = paired_controllers[i];
@@ -244,8 +252,10 @@ void ctlr_mgr::add_ctlr(const std::string& devpath, const std::string& devname)
         }
     }
     // check if we're already ready to pair this contoller
-    if (unpaired_controllers.count(devpath))
+    if (unpaired_controllers.count(devpath)) {
+    	std::cout << "Ready to pair: " << unpaired_controllers.count(devpath) << "\n"; // Debug
         epoll_event_callback(unpaired_controllers[devpath]->get_fd());
+    }
 }
 
 void ctlr_mgr::remove_ctlr(const std::string& devpath)
